@@ -29,7 +29,7 @@ fallback_order: [alpha, alpha-eu, beta, gamma-mini]
 # ----------------------------------------------------------------------------
 client:
   attempt_timeout_s: 8.0
-  max_attempts_per_provider: 2      # 1 retry on the same provider, then fail over
+  max_attempts_per_provider: 2      # one retry on the same provider, then fail over
   min_time_left_s: 1.0              # don't start an attempt that cannot finish
   backoff_base_s: 0.25
   backoff_cap_s: 4.0
@@ -39,7 +39,7 @@ client:
   quota_cooldown_s: 300
   breaker:
     window_size: 20
-    min_calls: 10
+    min_calls: 5
     failure_rate_threshold: 0.5
     slow_call_s: 5.0
     slow_rate_threshold: 0.6
@@ -53,7 +53,7 @@ client:
 # wrong_answers_by_reason, tune each value and justify it in report section 8.
 # ----------------------------------------------------------------------------
 cache:
-  similarity_threshold: 0.80
-  ttl_s: 600
-  max_stale_s: 0
-  max_entries: 500
+  similarity_threshold: 0.93
+  ttl_s: 60
+  max_stale_s: 120
+  max_entries: 50

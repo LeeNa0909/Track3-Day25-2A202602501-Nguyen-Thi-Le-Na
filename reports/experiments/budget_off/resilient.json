@@ -1,0 +1,84 @@
+{
+  "G2_overload_storm": {
+    "scenario": "G2_overload_storm",
+    "client": "resilient",
+    "turns": 2362,
+    "good_turns": 2285,
+    "availability": 0.9674,
+    "latency_p50_s": 3.248,
+    "latency_p95_s": 21.935,
+    "latency_p99_s": 28.727,
+    "calls": 4712,
+    "attempts": 7515,
+    "amplification": 1.595,
+    "retry_ratio": 0.392,
+    "attempts_by_provider": {
+      "alpha": 5990,
+      "alpha-eu": 977,
+      "beta": 543,
+      "gamma-mini": 5
+    },
+    "errors_by_code": {
+      "api_error": 10,
+      "client_timeout": 855,
+      "overloaded_error": 1539,
+      "rate_limit_exceeded": 476
+    },
+    "give_up_reasons": {
+      "deadline": 77
+    },
+    "cost": 5711.6,
+    "cost_per_good_turn": 2.5,
+    "retry_after_violations": 0,
+    "client_error_retries": 0,
+    "incompatible_routes": 0,
+    "unneeded_failovers": 0,
+    "recovery_s": 35.0,
+    "primary_share_after_restore": 1.0,
+    "checks": {
+      "availability_min": true,
+      "amplification_max": true,
+      "recovery_s_max": false,
+      "primary_share_after_restore_min": true
+    },
+    "pass": false,
+    "runtime_s": 0.24
+  },
+  "G3_brownout": {
+    "scenario": "G3_brownout",
+    "client": "resilient",
+    "turns": 1929,
+    "good_turns": 1929,
+    "availability": 1.0,
+    "latency_p50_s": 2.93,
+    "latency_p95_s": 4.768,
+    "latency_p99_s": 6.007,
+    "calls": 3858,
+    "attempts": 4489,
+    "amplification": 1.164,
+    "retry_ratio": 0.163,
+    "attempts_by_provider": {
+      "alpha": 4485,
+      "alpha-eu": 4
+    },
+    "errors_by_code": {
+      "api_error": 631
+    },
+    "give_up_reasons": {},
+    "cost": 4489.0,
+    "cost_per_good_turn": 2.327,
+    "retry_after_violations": 0,
+    "client_error_retries": 0,
+    "incompatible_routes": 0,
+    "unneeded_failovers": 0,
+    "recovery_s": 0.0,
+    "primary_share_after_restore": 1.0,
+    "checks": {
+      "availability_min": true,
+      "retry_ratio_max": false,
+      "amplification_max": true
+    },
+    "pass": false,
+    "runtime_s": 0.15
+  }
+}

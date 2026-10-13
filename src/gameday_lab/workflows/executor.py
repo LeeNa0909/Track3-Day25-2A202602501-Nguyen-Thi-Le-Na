@@ -30,12 +30,12 @@ T = TypeVar("T")
 def idempotency_key(req: RefundRequest, step: str) -> str:
     """TODO(student): a key that is identical for every retry / restart of the same
     side effect of the same session, and different across sessions and steps."""
-    raise NotImplementedError("TODO(student): idempotency_key()")
+    return f"refund-workflow:{req.session_id}:{step}"
 
 
 def checkpoint_key(req: RefundRequest, step: str) -> str:
     """TODO(student): DurableStore key under which the result of ``step`` is saved."""
-    raise NotImplementedError("TODO(student): checkpoint_key()")
+    return f"refund-workflow:{req.session_id}:checkpoint:{step}"
 
 
 class WorkflowExecutor:
@@ -47,7 +47,15 @@ class WorkflowExecutor:
     def _retry(self, fn: Callable[[], T]) -> T:
         """TODO(student): call fn(); retry on ServiceError / ServiceTimeout up to
         ``max_attempts`` times (re-raise the last one). Never catch WorkerCrash."""
-        raise NotImplementedError("TODO(student): _retry()")
+        for attempt in range(self.max_attempts):
+            try:
+                return fn()
+            except (ServiceError, ServiceTimeout):
+                if attempt + 1 == self.max_attempts:
+                    raise
+        # ``max_attempts`` is expected to be positive. Keep the failure explicit
+        # if a caller configures an invalid value instead of silently skipping work.
+        raise ValueError("max_attempts must be at least 1")
 
     def _step(self, req: RefundRequest, state: dict[str, Any], step: str) -> Any:
         """PROVIDED: execute one step. ``state`` holds results of earlier steps."""
@@ -75,4 +83,20 @@ class WorkflowExecutor:
         * otherwise execute it with ``self._step`` and checkpoint the result
         * return {"status": "done", **state}
         """
-        raise NotImplementedError("TODO(student): run()")
+        state: dict[str, Any] = {}
+        checkpoints = set(self.store.keys())
+
+        for step in STEPS:
+            key = checkpoint_key(req, step)
+            if key in checkpoints:
+                result = self.store.get(key)
+            else:
+                result = self._step(req, state, step)
+                # Persist only after the operation returned successfully. A crash
+                # between a side effect and this write is recovered by retrying
+                # with the same idempotency key.
+                self.store.put(key, result)
+                checkpoints.add(key)
+            state[step] = result
+
+        return {"status": "done", **state}
