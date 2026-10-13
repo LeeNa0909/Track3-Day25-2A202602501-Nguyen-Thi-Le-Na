@@ -1,5 +1,5 @@
 # Lab 25B — Report
-**Họ tên / nhóm:** Nguyen Thi Le Na · MSV: 2A202602501<br>
+**Họ tên / nhóm:** Nguyễn Thị Lê Na · MSV: 2A202602501<br>
 **Commit:** `cd20ff9`<br>
 **Điểm tự động (`make grade`):** 84 / 88 *(4 điểm SLO trên dữ liệu ẩn do giảng viên chấm)*
 ## 1. Kết quả Game Day (seed 25)
